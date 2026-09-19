@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Null Hub</title>
+<meta name="description" content="A script hub for Steal An Egg. Server hop, search, keyless scripts, visuals, optimizer." />
+<link rel="icon" type="image/png" href="logo.png" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --bg:        #0a0a0a;
+    --surface:   #0e0e0e;
+    --card:      #141414;
+    --card-hi:   #1a1a1a;
+    --border:    #1f1f1f;
+    --border-hi: #2e2e2e;
+    --text:      #ededed;
+    --dim:       #767676;
+    --faint:     #464646;
+    --white:     #ffffff;
+    --green:     #4ade80;
+    --radius:    8px;
+    --mono:      ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans:      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.028) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 70%);
+  }
+
+  body > * { position: relative; z-index: 1; }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    background: rgba(10,10,10,0.72);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    border-bottom: 1px solid var(--border);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand img {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: #000;
+    display: block;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .brand-text .name {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: -0.01em;
+  }
+  .brand-text .sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+  }
+  .nav-links {
+    display: flex;
+    gap: 2px;
+  }
+  .nav-links a {
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--dim);
+    transition: color 0.12s, background 0.12s;
+  }
+  .nav-links a:hover {
+    color: var(--text);
+    background: var(--card);
+  }
+
+  .hero {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 90px 28px 50px;
+  }
+  .hero-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .hero-logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 15px;
+    background: #000;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    display: block;
+  }
+  .hero-head-text h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .hero-head-text p {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .hero-lead {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #c8c8c8;
+    margin-bottom: 36px;
+    max-width: 560px;
+  }
+  .hero-lead code {
+    font-family: var(--mono);
+    font-size: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--text);
+  }
+
+  .ls-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .ls-label span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .ls-label .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--dim);
+    font-size: 10px;
+  }
+  .ls-label .live .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .ls-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 14px 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .ls-box:hover { border-color: var(--border-hi); }
+  .ls-box::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--white);
+  }
+  .ls-code {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #d8d8d8;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    user-select: all;
+    line-height: 1.5;
+    padding: 2px 0;
+  }
+  .ls-code::-webkit-scrollbar { display: none; }
+  .copy-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 10px 16px;
+    background: var(--white);
+    color: #0a0a0a;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: transform 0.12s, background 0.15s;
+  }
+  .copy-btn:hover { background: #e4e4e4; }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn.copied { background: var(--green); }
+  .copy-btn svg { width: 13px; height: 13px; }
+
+  .preview {
+    max-width: 1080px;
+    margin: 60px auto;
+    padding: 0 28px;
+  }
+  .preview-frame {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(255,255,255,0.015);
+  }
+  .preview-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 60px 28px;
+  }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sec-head h2 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .sec-head .count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 18px 20px;
+    transition: border-color 0.18s, background 0.18s, transform 0.18s;
+  }
+  .feature:hover {
+    border-color: var(--border-hi);
+    background: var(--card-hi);
+    transform: translateY(-2px);
+  }
+  .feature .emoji {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 12px;
+    opacity: 0.9;
+  }
+  .feature h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .feature p {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.55;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .step h3 {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .step p {
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.55;
+  }
+  .step code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--text);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 28px;
+    margin-top: 40px;
+  }
+  .footer-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .footer-inner p {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .footer-inner .links {
+    display: flex;
+    gap: 18px;
+  }
+  .footer-inner .links a {
+    font-size: 12px;
+    color: var(--dim);
+    transition: color 0.12s;
+  }
+  .footer-inner .links a:hover { color: var(--text); }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%, 100px);
+    background: var(--card);
+    border: 1px solid var(--border-hi);
+    border-radius: 8px;
+    padding: 11px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    pointer-events: none;
+  }
+  .toast.show {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  .toast .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+  }
+
+  @media (max-width: 640px) {
+    nav { padding: 12px 18px; }
+    .nav-links { display: none; }
+    .hero { padding: 60px 20px 40px; }
+    .hero-head-text h1 { font-size: 26px; }
+    .hero-logo { width: 54px; height: 54px; border-radius: 13px; }
+    .hero-lead { font-size: 15px; }
+    .ls-box { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 14px 14px 18px; }
+    .ls-code { white-space: normal; word-break: break-all; font-size: 11px; }
+    .copy-btn { justify-content: center; }
+    section { padding: 40px 20px; }
+    .preview { padding: 0 20px; margin: 40px auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">
+    <img src="logo.png" alt="" />
+    <div class="brand-text">
+      <span class="name">Null Hub</span>
+      <span class="sub">steal an egg</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#guide">Guide</a>
+    <a href="https://github.com/krislowk/Null-Hub" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-head">
+    <img class="hero-logo" src="logo.png" alt="" />
+    <div class="hero-head-text">
+      <h1>Null Hub</h1>
+      <p>v3.2 · updated recently</p>
+    </div>
+  </div>
+
+  <p class="hero-lead">
+    A hub for Steal An Egg. Search, hop servers, load other hubs, tweak visuals, kill lag.
+    Everything runs from one script and one window.
+  </p>
+
+  <div class="ls-label">
+    <span>Loadstring</span>
+    <span class="live"><span class="dot"></span>live</span>
+  </div>
+
+  <div class="ls-box">
+    <code class="ls-code" id="ls">loadstring(game:HttpGet("https://raw.githubusercontent.com/krislowk/Null-Hub/refs/heads/main/NullHub.txt"))()</code>
+    <button class="copy-btn" id="copyBtn" onclick="copyLS()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <span>Copy</span>
+    </button>
+  </div>
+</header>
+
+<div class="preview">
+  <div class="preview-frame">
+    <img src="preview.png" alt="Null Hub UI" onerror="this.parentElement.innerHTML='<div style=&quot;padding:100px 20px;text-align:center;color:#464646;font-family:var(--mono);font-size:12px&quot;>drop your screenshot here as <b style=&quot;color:#767676&quot;>preview.png</b></div>';" />
+  </div>
+</div>
+
+<section id="features">
+  <div class="sec-head">
+    <h2>What's inside</h2>
+    <span class="count">8 tabs</span>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <span class="emoji">🏠</span>
+      <h3>Home</h3>
+      <p>Trending scripts pulled live from ScriptBlox. Refresh it whenever.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">🔄</span>
+      <h3>Server hop</h3>
+      <p>One tap joins the lowest-pop server. Re-runs Null Hub on the new server so you don't have to re-execute.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">🔍</span>
+      <h3>Search</h3>
+      <p>Search ScriptBlox by name. Filter to keyless only, or search whatever game you're in right now.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">🎮</span>
+      <h3>Keyless</h3>
+      <p>26 keyless Steal An Egg hubs. Tap, wait, done. No Discord, no key, no bullshit.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">🔑</span>
+      <h3>Key system</h3>
+      <p>12 hubs that need a key. Links to their sites so you can go grab one.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">⭐</span>
+      <h3>Favorites</h3>
+      <p>Star anything. Saved to a file so they survive restarts and hops.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">👁️</span>
+      <h3>Visuals</h3>
+      <p>Player ESP with names and distance. Fullbright, fog removal, FOV slider.</p>
+    </div>
+    <div class="feature">
+      <span class="emoji">⚡</span>
+      <h3>Optimizer</h3>
+      <p>Frame boost, kill particles, kill lighting FX, mute sounds. All toggleable and reversible.</p>
+    </div>
+  </div>
+</section>
+
+<section id="guide">
+  <div class="sec-head">
+    <h2>How to run it</h2>
+    <span class="count">3 steps</span>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01</span>
+      <h3>Get an executor</h3>
+      <p>Delta, Arceus X, Xeno, Krnl, Synapse — anything modern. Mobile or PC, doesn't matter.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <h3>Open Steal An Egg</h3>
+      <p>The hub only loads in Steal An Egg. Join the game before you run anything.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <h3>Paste the loadstring</h3>
+      <p>Copy what's at the top of this page, paste into your executor, hit <code>Execute</code>. Window shows up in a few seconds.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p>null hub · not affiliated with roblox</p>
+    <div class="links">
+      <a href="https://github.com/krislowk/Null-Hub" target="_blank" rel="noopener">GitHub</a>
+      <a href="#features">Features</a>
+      <a href="#guide">Guide</a>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">
+  <span class="dot"></span>
+  <span id="toastMsg">Copied</span>
+</div>
+
+<script>
+  const LS = document.getElementById('ls');
+  const BTN = document.getElementById('copyBtn');
+  const TOAST = document.getElementById('toast');
+  const TOAST_MSG = document.getElementById('toastMsg');
+
+  function showToast(msg) {
+    TOAST_MSG.textContent = msg;
+    TOAST.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => TOAST.classList.remove('show'), 1800);
+  }
+
+  function copyLS() {
+    const text = LS.textContent.trim();
+
+    const flash = () => {
+      BTN.classList.add('copied');
+      BTN.querySelector('span').textContent = 'Copied';
+      showToast('Copied to clipboard');
+      setTimeout(() => {
+        BTN.classList.remove('copied');
+        BTN.querySelector('span').textContent = 'Copy';
+      }, 1500);
+    };
+
+    const legacy = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      flash();
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(flash).catch(legacy);
+    } else {
+      legacy();
+    }
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) {
+        const el = document.querySelector(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+</script>
+</body>
+  </html>
