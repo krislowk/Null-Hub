@@ -9,496 +9,198 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-
   :root {
-    --bg:        #0a0a0a;
-    --surface:   #0e0e0e;
-    --card:      #141414;
-    --card-hi:   #1a1a1a;
-    --border:    #1f1f1f;
-    --border-hi: #2e2e2e;
-    --text:      #ededed;
-    --dim:       #767676;
-    --faint:     #464646;
-    --white:     #ffffff;
-    --green:     #4ade80;
-    --radius:    8px;
-    --mono:      ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
-    --sans:      -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    --bg: #0a0a0a; --surface: #0e0e0e; --card: #141414; --card-hi: #1a1a1a;
+    --border: #1f1f1f; --border-hi: #2e2e2e; --text: #ededed; --dim: #767676;
+    --faint: #464646; --white: #fff; --green: #4ade80; --radius: 8px;
+    --mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   }
-
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 15px;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    min-height: 100vh;
-    overflow-x: hidden;
+    background: var(--bg); color: var(--text); font-family: var(--sans);
+    font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    min-height: 100vh; overflow-x: hidden;
   }
-
-  /* animated grid */
   body::before {
-    content: "";
-    position: fixed;
-    inset: -50%;
-    width: 200%;
-    height: 200%;
+    content: ""; position: fixed; inset: -50%; width: 200%; height: 200%;
     background-image:
       linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
+    background-size: 48px 48px; pointer-events: none; z-index: 0;
     animation: gridDrift 40s linear infinite;
     mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 10%, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 20%, #000 10%, transparent 75%);
   }
-
-  @keyframes gridDrift {
-    0%   { transform: translate(0, 0); }
-    100% { transform: translate(48px, 48px); }
-  }
-
-  /* soft vignette */
+  @keyframes gridDrift { to { transform: translate(48px, 48px); } }
   body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
     background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,255,255,0.03), transparent 55%);
-    pointer-events: none;
-    z-index: 0;
   }
-
   body > * { position: relative; z-index: 1; }
-
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
 
   nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 28px;
-    background: rgba(10,10,10,0.78);
-    backdrop-filter: blur(16px) saturate(1.3);
-    -webkit-backdrop-filter: blur(16px) saturate(1.3);
-    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 50; display: flex; align-items: center;
+    justify-content: space-between; padding: 14px 28px;
+    background: rgba(10,10,10,0.78); backdrop-filter: blur(16px) saturate(1.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3); border-bottom: 1px solid var(--border);
   }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .brand img {
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-    background: #000;
-    display: block;
-    object-fit: cover;
-  }
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.15;
-  }
-  .brand-text .name {
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: -0.01em;
-  }
-  .brand-text .sub {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--dim);
-  }
-  .nav-links {
-    display: flex;
-    gap: 2px;
-  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand img { width: 26px; height: 26px; border-radius: 6px; background: #000; object-fit: cover; display: block; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .brand-text .name { font-weight: 700; font-size: 13px; letter-spacing: -0.01em; }
+  .brand-text .sub { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+  .nav-links { display: flex; gap: 2px; }
   .nav-links a {
-    padding: 7px 12px;
-    border-radius: 6px;
-    font-size: 13px;
-    color: var(--dim);
+    padding: 7px 12px; border-radius: 6px; font-size: 13px; color: var(--dim);
     transition: color 0.12s, background 0.12s;
   }
-  .nav-links a:hover {
-    color: var(--text);
-    background: var(--card);
-  }
+  .nav-links a:hover { color: var(--text); background: var(--card); }
 
-  .hero {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 90px 28px 50px;
-  }
-  .hero-head {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 28px;
-  }
+  .hero { max-width: 720px; margin: 0 auto; padding: 90px 28px 50px; }
+  .hero-head { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
   .hero-logo {
-    width: 64px;
-    height: 64px;
-    border-radius: 15px;
-    background: #000;
-    border: 1px solid var(--border);
-    flex-shrink: 0;
-    display: block;
-    object-fit: cover;
+    width: 64px; height: 64px; border-radius: 15px; background: #000;
+    border: 1px solid var(--border); flex-shrink: 0; object-fit: cover; display: block;
   }
   .hero-head-text h1 {
-    font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 8px;
+    font-size: 34px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px;
   }
   .hero-head-text p {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--dim);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-family: var(--mono); font-size: 12px; color: var(--dim);
+    display: flex; align-items: center; gap: 8px;
   }
   .badge {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 4px;
-    background: rgba(74, 222, 128, 0.12);
-    color: var(--green);
-    border: 1px solid rgba(74, 222, 128, 0.25);
+    display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px;
+    background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.25);
   }
-
   .hero-lead {
-    font-size: 17px;
-    line-height: 1.55;
-    color: #c8c8c8;
-    margin-bottom: 36px;
-    max-width: 560px;
-  }
-  .hero-lead code {
-    font-family: var(--mono);
-    font-size: 14px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    border-radius: 4px;
-    color: var(--text);
+    font-size: 17px; line-height: 1.55; color: #c8c8c8; margin-bottom: 36px; max-width: 560px;
   }
 
   .ls-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
   }
   .ls-label span {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    letter-spacing: 0.06em; text-transform: uppercase;
   }
   .ls-label .live {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--dim);
-    font-size: 10px;
+    display: inline-flex; align-items: center; gap: 6px; color: var(--dim); font-size: 10px;
   }
   .ls-label .live .dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
-    animation: pulse 2s ease-in-out infinite;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 8px var(--green); animation: pulse 2s ease-in-out infinite;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.35; }
-  }
+  @keyframes pulse { 50% { opacity: 0.35; } }
 
   .ls-box {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 14px 14px 20px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.2s;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 14px 14px 20px; display: flex; align-items: center; gap: 14px;
+    position: relative; overflow: hidden; transition: border-color 0.2s;
   }
   .ls-box:hover { border-color: var(--border-hi); }
   .ls-box::before {
-    content: "";
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--white);
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--white);
   }
   .ls-code {
-    flex: 1;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: #d8d8d8;
-    white-space: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-    user-select: all;
-    line-height: 1.5;
-    padding: 2px 0;
+    flex: 1; font-family: var(--mono); font-size: 12px; color: #d8d8d8;
+    white-space: nowrap; overflow-x: auto; scrollbar-width: none; user-select: all; line-height: 1.5;
   }
   .ls-code::-webkit-scrollbar { display: none; }
   .copy-btn {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 10px 16px;
-    background: var(--white);
-    color: #0a0a0a;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    transition: transform 0.12s, background 0.15s;
+    flex-shrink: 0; display: flex; align-items: center; gap: 7px; padding: 10px 16px;
+    background: var(--white); color: #0a0a0a; border-radius: 6px; font-size: 12px;
+    font-weight: 700; transition: transform 0.12s, background 0.15s;
   }
   .copy-btn:hover { background: #e4e4e4; }
   .copy-btn:active { transform: scale(0.97); }
   .copy-btn.copied { background: var(--green); }
   .copy-btn svg { width: 13px; height: 13px; }
 
-  .preview {
-    max-width: 1080px;
-    margin: 60px auto;
-    padding: 0 28px;
-  }
+  .preview { max-width: 1080px; margin: 60px auto; padding: 0 28px; }
   .preview-frame {
-    position: relative;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
     background: var(--surface);
-    box-shadow:
-      0 30px 80px rgba(0,0,0,0.5),
-      0 0 0 1px rgba(255,255,255,0.015);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.015);
   }
-  .preview-frame img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
+  .preview-frame img { display: block; width: 100%; height: auto; }
 
-  section {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 60px 28px;
-  }
+  section { max-width: 1080px; margin: 0 auto; padding: 60px 28px; }
   .sec-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 22px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--border);
   }
-  .sec-head h2 {
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .sec-head .count {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-  }
+  .sec-head h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+  .sec-head .count { font-family: var(--mono); font-size: 11px; color: var(--faint); }
 
   .features {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 10px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px;
   }
   .feature {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 18px 20px;
-    transition: border-color 0.18s, background 0.18s, transform 0.18s;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 18px 18px 20px; transition: border-color 0.18s, background 0.18s, transform 0.18s;
   }
-  .feature:hover {
-    border-color: var(--border-hi);
-    background: var(--card-hi);
-    transform: translateY(-2px);
-  }
-  .feature .emoji {
-    font-size: 18px;
-    display: block;
-    margin-bottom: 12px;
-    opacity: 0.9;
-  }
-  .feature h3 {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-  .feature p {
-    font-size: 13px;
-    color: var(--dim);
-    line-height: 1.55;
-  }
+  .feature:hover { border-color: var(--border-hi); background: var(--card-hi); transform: translateY(-2px); }
+  .feature .emoji { font-size: 18px; display: block; margin-bottom: 12px; opacity: 0.9; }
+  .feature h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .feature p { font-size: 13px; color: var(--dim); line-height: 1.55; }
 
   .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
   }
   .step {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px;
   }
   .step-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-    letter-spacing: 0.08em;
-    margin-bottom: 12px;
-    display: block;
+    font-family: var(--mono); font-size: 11px; color: var(--faint);
+    letter-spacing: 0.08em; margin-bottom: 12px; display: block;
   }
-  .step h3 {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    letter-spacing: -0.01em;
-  }
-  .step p {
-    font-size: 13px;
-    color: var(--dim);
-    line-height: 1.55;
-  }
+  .step h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .step p { font-size: 13px; color: var(--dim); line-height: 1.55; }
   .step code {
-    font-family: var(--mono);
-    font-size: 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    border-radius: 4px;
-    color: var(--text);
+    font-family: var(--mono); font-size: 12px; background: var(--bg);
+    border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--text);
   }
 
   .changelog {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px 22px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px;
   }
-  .changelog ul {
-    list-style: none;
-  }
+  .changelog ul { list-style: none; }
   .changelog li {
-    position: relative;
-    padding-left: 16px;
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: var(--dim);
-    line-height: 1.5;
+    position: relative; padding-left: 16px; margin-bottom: 10px;
+    font-size: 13px; color: var(--dim); line-height: 1.5;
   }
   .changelog li:last-child { margin-bottom: 0; }
   .changelog li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--faint);
+    content: ""; position: absolute; left: 0; top: 8px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--faint);
   }
-  .changelog li strong {
-    color: var(--text);
-    font-weight: 600;
-  }
+  .changelog li strong { color: var(--text); font-weight: 600; }
 
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 28px 28px;
-    margin-top: 40px;
-  }
+  footer { border-top: 1px solid var(--border); padding: 28px; margin-top: 40px; }
   .footer-inner {
-    max-width: 1080px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
+    max-width: 1080px; margin: 0 auto; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 14px;
   }
-  .footer-inner p {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--faint);
-  }
-  .footer-inner .links {
-    display: flex;
-    gap: 18px;
-  }
-  .footer-inner .links a {
-    font-size: 12px;
-    color: var(--dim);
-    transition: color 0.12s;
-  }
+  .footer-inner p { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+  .footer-inner .links { display: flex; gap: 18px; }
+  .footer-inner .links a { font-size: 12px; color: var(--dim); transition: color 0.12s; }
   .footer-inner .links a:hover { color: var(--text); }
 
   .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translate(-50%, 100px);
-    background: var(--card);
-    border: 1px solid var(--border-hi);
-    border-radius: 8px;
-    padding: 11px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-    opacity: 0;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    pointer-events: none;
+    position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 100px);
+    background: var(--card); border: 1px solid var(--border-hi); border-radius: 8px;
+    padding: 11px 16px; font-size: 13px; font-weight: 600;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6); opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.25s;
+    z-index: 100; display: flex; align-items: center; gap: 9px; pointer-events: none;
   }
-  .toast.show {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
+  .toast.show { transform: translate(-50%, 0); opacity: 1; }
   .toast .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 8px var(--green);
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green);
   }
 
   @media (max-width: 640px) {
@@ -542,17 +244,14 @@
       <p><span class="badge">v2</span> updated release</p>
     </div>
   </div>
-
   <p class="hero-lead">
     Script hub for Steal An Egg. Search, hop servers, load other hubs, tweak visuals, cut lag.
     One loadstring. One window.
   </p>
-
   <div class="ls-label">
     <span>Loadstring</span>
     <span class="live"><span class="dot"></span>live</span>
   </div>
-
   <div class="ls-box">
     <code class="ls-code" id="ls">loadstring(game:HttpGet("https://raw.githubusercontent.com/krislowk/Null-Hub/refs/heads/main/NullHub.txt"))()</code>
     <button class="copy-btn" id="copyBtn" onclick="copyLS()">
@@ -574,9 +273,8 @@
 <section id="features">
   <div class="sec-head">
     <h2>What's inside</h2>
-    <span class="count">8 tabs</span>
+    <span class="count">9 tabs</span>
   </div>
-
   <div class="features">
     <div class="feature">
       <span class="emoji">🏠</span>
@@ -618,6 +316,11 @@
       <h3>Optimizer</h3>
       <p>Frame boost, kill particles, kill lighting FX, mute sounds. All reversible.</p>
     </div>
+    <div class="feature">
+      <span class="emoji">⚙️</span>
+      <h3>Settings</h3>
+      <p>FPS and ping counter, hub options, and small quality-of-life toggles.</p>
+    </div>
   </div>
 </section>
 
@@ -626,7 +329,6 @@
     <h2>How to run it</h2>
     <span class="count">3 steps</span>
   </div>
-
   <div class="steps">
     <div class="step">
       <span class="step-num">01</span>
@@ -653,10 +355,11 @@
   </div>
   <div class="changelog">
     <ul>
-      <li><strong>v2</strong> — Updated core script, cleaner load path, stability fixes.</li>
-      <li>Server hop still re-executes the hub on the new server.</li>
-      <li>Search / keyless / favorites tabs kept and tightened.</li>
-      <li>Visuals + optimizer unchanged in layout, small perf tweaks.</li>
+      <li><strong>Settings tab</strong> — new tab for hub options</li>
+      <li><strong>FPS + ping counter</strong> — live readout in Settings</li>
+      <li><strong>More scripts</strong> — extra keyless and key-required hubs</li>
+      <li><strong>Optimizer</strong> — cleaner toggles, better defaults</li>
+      <li>Small stability and UI tweaks across the board</li>
     </ul>
   </div>
 </section>
@@ -693,7 +396,6 @@
 
   function copyLS() {
     const text = LS.textContent.trim();
-
     const flash = () => {
       BTN.classList.add('copied');
       BTN.querySelector('span').textContent = 'Copied';
@@ -703,24 +405,16 @@
         BTN.querySelector('span').textContent = 'Copy';
       }, 1500);
     };
-
     const legacy = () => {
       const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
+      ta.value = text; ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta); ta.select();
       try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-      flash();
+      document.body.removeChild(ta); flash();
     };
-
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(flash).catch(legacy);
-    } else {
-      legacy();
-    }
+    } else { legacy(); }
   }
 
   document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -728,10 +422,7 @@
       const id = a.getAttribute('href');
       if (id.length > 1) {
         const el = document.querySelector(id);
-        if (el) {
-          e.preventDefault();
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       }
     });
   });
