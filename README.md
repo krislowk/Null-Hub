@@ -8,6 +8,7 @@ Steal An Egg script hub.
 
 [![live](https://img.shields.io/badge/live-yes-4ade80?style=flat-square&labelColor=0a0a0a)](#)
 [![keyless](https://img.shields.io/badge/keyless-yes-edededed?style=flat-square&labelColor=0a0a0a)](#)
+[![v2](https://img.shields.io/badge/version-v2-767676?style=flat-square&labelColor=0a0a0a)](#)
 [![steal an egg only](https://img.shields.io/badge/place-steal_an_egg_only-767676?style=flat-square&labelColor=0a0a0a)](#)
 
 </div>
@@ -31,11 +32,22 @@ Paste it in your executor and run it. Only works in Steal An Egg.
 | Home | Trending scripts from ScriptBlox. Refresh whenever. |
 | Hop | Joins the lowest-pop server in one tap. Re-runs the hub on the new server so you don't have to. |
 | Search | Search ScriptBlox. Keyless-only filter. Or just search the game you're in. |
-| Keyless | 26 keyless Steal An Egg hubs. Tap, wait, done. |
-| Key | 12 hubs that need a key. Links to their sites. |
+| Keyless | Keyless Steal An Egg hubs. Tap, wait, done. |
+| Key | Hubs that need a key. Links to their sites. |
 | Favs | Star scripts. Saved to file, survives restarts and hops. |
-| Visuals | Player ESP with names and distance. Fullbright, no fog, FOV slider. |
-| Optimize | Frame boost, kill particles, kill lighting FX, mute sounds. All reversible. |
+| Visuals | Player ESP with names and distance. Fullbright, no fog, FOV slider. **FPS + ping counter.** |
+| Optimize | Dedicated tab — frame boost, kill particles, kill lighting FX, mute sounds. All reversible. |
+| Settings | PC support: keybind to open the hub (no floating button on desktop). |
+
+---
+
+## Changelog (v2)
+
+- **Settings tab** — PC keybind to open the UI
+- **FPS + ping** — live counters in Visuals
+- **More scripts** — extra keyless and key-required hubs
+- **Optimize tab** — all lag/FX toggles here, improved defaults
+- Small stability and UI tweaks
 
 ---
 
