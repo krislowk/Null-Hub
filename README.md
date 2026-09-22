@@ -69,7 +69,7 @@ Go to the Hop tab, paste the raw URL of NullHub.txt, flip the toggle. Done.
 
 ## About the file
 
-`NullHub.txt` is obfuscated. It's compiled, not readable Lua. That's on purpose. You can't peek at it, edit it, or fork it.
+`NullHubV2.txt` is obfuscated. It's compiled, not readable Lua. That's on purpose. You can't peek at it, edit it, or fork it.
 
 ---
 
