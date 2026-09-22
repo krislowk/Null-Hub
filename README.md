@@ -18,7 +18,7 @@ Steal An Egg script hub.
 ## Loadstring
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/krislowk/Null-Hub/refs/heads/main/NullHub.txt"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/krislowk/Null-Hub/refs/heads/main/NullHubV2.txt"))()
 ```
 
 Paste it in your executor and run it. Only works in Steal An Egg.
