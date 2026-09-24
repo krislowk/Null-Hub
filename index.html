@@ -13,6 +13,7 @@
     --bg: #0a0a0a; --surface: #0e0e0e; --card: #141414; --card-hi: #1a1a1a;
     --border: #1f1f1f; --border-hi: #2e2e2e; --text: #ededed; --dim: #767676;
     --faint: #464646; --white: #fff; --green: #4ade80; --radius: 8px;
+    --discord: #5865f2;
     --mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, Consolas, monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
   }
@@ -51,12 +52,31 @@
   .brand-text { display: flex; flex-direction: column; line-height: 1.15; }
   .brand-text .name { font-weight: 700; font-size: 13px; letter-spacing: -0.01em; }
   .brand-text .sub { font-family: var(--mono); font-size: 10px; color: var(--dim); }
-  .nav-links { display: flex; gap: 2px; }
+  .nav-links { display: flex; gap: 2px; align-items: center; }
   .nav-links a {
     padding: 7px 12px; border-radius: 6px; font-size: 13px; color: var(--dim);
     transition: color 0.12s, background 0.12s;
   }
   .nav-links a:hover { color: var(--text); background: var(--card); }
+  .nav-links a.ext {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--border); margin-left: 6px;
+  }
+  .nav-links a.ext:hover { border-color: var(--border-hi); background: var(--card-hi); }
+  .nav-links a.ext::after {
+    content: "↗"; font-size: 11px; color: var(--dim); transition: color 0.12s;
+  }
+  .nav-links a.ext:hover::after { color: var(--text); }
+  .nav-links a.discord {
+    color: #a5b0ff; border-color: rgba(88,101,242,0.35);
+    background: rgba(88,101,242,0.08);
+  }
+  .nav-links a.discord:hover {
+    background: rgba(88,101,242,0.16); border-color: rgba(88,101,242,0.6);
+    color: #c8cfff;
+  }
+  .nav-links a.discord::after { color: #a5b0ff; }
+  .nav-links a.discord:hover::after { color: #c8cfff; }
 
   .hero { max-width: 720px; margin: 0 auto; padding: 90px 28px 50px; }
   .hero-head { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
@@ -120,6 +140,25 @@
   .copy-btn.copied { background: var(--green); }
   .copy-btn svg { width: 13px; height: 13px; }
 
+  /* Discord CTA under loadstring */
+  .dc-cta {
+    margin-top: 12px; display: flex; align-items: center; gap: 14px;
+    background: linear-gradient(90deg, rgba(88,101,242,0.08) 0%, rgba(88,101,242,0.02) 100%);
+    border: 1px solid rgba(88,101,242,0.25); border-radius: var(--radius);
+    padding: 12px 16px; transition: border-color 0.15s, background 0.15s;
+  }
+  .dc-cta:hover { border-color: rgba(88,101,242,0.55); background: linear-gradient(90deg, rgba(88,101,242,0.14) 0%, rgba(88,101,242,0.04) 100%); }
+  .dc-cta .dc-icon {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(88,101,242,0.16); color: #a5b0ff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .dc-cta .dc-icon svg { width: 20px; height: 20px; }
+  .dc-cta .dc-text { flex: 1; line-height: 1.35; }
+  .dc-cta .dc-text strong { font-size: 13px; font-weight: 700; color: var(--text); display: block; }
+  .dc-cta .dc-text span { font-size: 12px; color: var(--dim); }
+  .dc-cta .dc-arrow { color: #a5b0ff; font-size: 15px; flex-shrink: 0; }
+
   .preview { max-width: 1080px; margin: 60px auto; padding: 0 28px; }
   .preview-frame {
     border-radius: 12px; overflow: hidden; border: 1px solid var(--border);
@@ -142,11 +181,35 @@
   .feature {
     background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
     padding: 18px 18px 20px; transition: border-color 0.18s, background 0.18s, transform 0.18s;
+    display: block;
   }
   .feature:hover { border-color: var(--border-hi); background: var(--card-hi); transform: translateY(-2px); }
   .feature .emoji { font-size: 18px; display: block; margin-bottom: 12px; opacity: 0.9; }
   .feature h3 { font-size: 13px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.01em; }
   .feature p { font-size: 13px; color: var(--dim); line-height: 1.55; }
+  .feature.special {
+    background: linear-gradient(180deg, var(--card-hi) 0%, var(--card) 100%);
+    border-color: var(--border-hi);
+  }
+  .feature.special:hover { border-color: #444; }
+  .feature.discord {
+    background: linear-gradient(180deg, rgba(88,101,242,0.10) 0%, rgba(88,101,242,0.02) 100%);
+    border-color: rgba(88,101,242,0.30);
+  }
+  .feature.discord:hover {
+    border-color: rgba(88,101,242,0.60);
+    background: linear-gradient(180deg, rgba(88,101,242,0.16) 0%, rgba(88,101,242,0.04) 100%);
+  }
+  .feature.discord h3 { color: #c8cfff; }
+  .feature .tag {
+    display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
+    background: rgba(255,255,255,0.06); color: var(--dim); border: 1px solid var(--border-hi);
+    margin-left: 6px; vertical-align: middle;
+  }
+  .feature.discord .tag {
+    background: rgba(88,101,242,0.16); color: #a5b0ff; border-color: rgba(88,101,242,0.35);
+  }
 
   .steps {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
@@ -186,9 +249,11 @@
     align-items: center; flex-wrap: wrap; gap: 14px;
   }
   .footer-inner p { font-family: var(--mono); font-size: 11px; color: var(--faint); }
-  .footer-inner .links { display: flex; gap: 18px; }
+  .footer-inner .links { display: flex; gap: 18px; flex-wrap: wrap; align-items: center; }
   .footer-inner .links a { font-size: 12px; color: var(--dim); transition: color 0.12s; }
   .footer-inner .links a:hover { color: var(--text); }
+  .footer-inner .links a.discord { color: #a5b0ff; }
+  .footer-inner .links a.discord:hover { color: #c8cfff; }
 
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 100px);
@@ -213,6 +278,8 @@
     .ls-box { flex-direction: column; align-items: stretch; gap: 12px; padding: 14px 14px 14px 18px; }
     .ls-code { white-space: normal; word-break: break-all; font-size: 11px; }
     .copy-btn { justify-content: center; }
+    .dc-cta { flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; }
+    .dc-cta .dc-arrow { display: none; }
     section { padding: 40px 20px; }
     .preview { padding: 0 20px; margin: 40px auto; }
   }
@@ -232,6 +299,8 @@
     <a href="#features">Features</a>
     <a href="#guide">Guide</a>
     <a href="#changelog">Changelog</a>
+    <a href="https://nullfuscator.vercel.app/" target="_blank" rel="noopener" class="ext">NullFuscator</a>
+    <a href="https://discord.gg/T8YghpMFF" target="_blank" rel="noopener" class="ext discord">Discord</a>
     <a href="https://github.com/krislowk/Null-Hub" target="_blank" rel="noopener">GitHub</a>
   </div>
 </nav>
@@ -262,6 +331,18 @@
       <span>Copy</span>
     </button>
   </div>
+  <a class="dc-cta" href="https://discord.gg/T8YghpMFF" target="_blank" rel="noopener">
+    <div class="dc-icon">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+      </svg>
+    </div>
+    <div class="dc-text">
+      <strong>Join the Discord</strong>
+      <span>Official Null Hub community — support, updates, script requests</span>
+    </div>
+    <span class="dc-arrow">↗</span>
+  </a>
 </header>
 
 <div class="preview">
@@ -273,7 +354,7 @@
 <section id="features">
   <div class="sec-head">
     <h2>What's inside</h2>
-    <span class="count">9 tabs</span>
+    <span class="count">11 tabs</span>
   </div>
   <div class="features">
     <div class="feature">
@@ -321,6 +402,16 @@
       <h3>Settings</h3>
       <p>PC support: keybind to open the hub (no floating button needed on desktop).</p>
     </div>
+    <a class="feature special" href="https://nullfuscator.vercel.app/" target="_blank" rel="noopener">
+      <span class="emoji">🛡️</span>
+      <h3>NullFuscator <span class="tag">Sister Tool</span></h3>
+      <p>Obfuscator built alongside Null Hub. Paste your Lua, get protected output. Free, in-browser.</p>
+    </a>
+    <a class="feature discord" href="https://discord.gg/T8YghpMFF" target="_blank" rel="noopener">
+      <span class="emoji">💬</span>
+      <h3>Discord Server <span class="tag">Official</span></h3>
+      <p>Join the Null Hub community. Support, updates, script drops, and everything else.</p>
+    </a>
   </div>
 </section>
 
@@ -359,6 +450,8 @@
       <li><strong>FPS + ping</strong> — live counters in the Visuals tab</li>
       <li><strong>More scripts</strong> — extra keyless and key-required hubs</li>
       <li><strong>Optimizer tab</strong> — all lag/FX toggles live here, improved defaults</li>
+      <li><strong>NullFuscator</strong> — sister obfuscator tool, linked in the nav and featured card</li>
+      <li><strong>Discord</strong> — official Null Hub server now linked everywhere</li>
       <li>Small stability and UI tweaks</li>
     </ul>
   </div>
@@ -368,6 +461,8 @@
   <div class="footer-inner">
     <p>null hub v2 · not affiliated with roblox</p>
     <div class="links">
+      <a href="https://discord.gg/T8YghpMFF" target="_blank" rel="noopener" class="discord">Discord</a>
+      <a href="https://nullfuscator.vercel.app/" target="_blank" rel="noopener">NullFuscator</a>
       <a href="https://github.com/krislowk/Null-Hub" target="_blank" rel="noopener">GitHub</a>
       <a href="#features">Features</a>
       <a href="#guide">Guide</a>
